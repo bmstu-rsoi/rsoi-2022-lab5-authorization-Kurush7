@@ -150,7 +150,7 @@
                   "",
                   "    const pageSize = Number(pm.request.url.query.get(\"size\"))",
                   "    const city = decodeURIComponent(pm.request.url.query.get(\"city\"))",
-                  "    const libraryUid = pm.collectionVariables.get(\"libraryUid\")",
+                  "    const libraryUid = pm.environment.get(\"libraryUid\")",
                   "",
                   "    const response = pm.response.json();",
                   "    pm.expect(response.items).to.be.an(\"array\")",
@@ -282,7 +282,7 @@
                   "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
                   "",
                   "    const pageSize = Number(pm.request.url.query.get(\"size\"))",
-                  "    const bookUid = pm.collectionVariables.get(\"bookUid\")",
+                  "    const bookUid = pm.environment.get(\"bookUid\")",
                   "",
                   "    const response = pm.response.json();",
                   "    pm.expect(response.items).to.be.an(\"array\")",
@@ -492,8 +492,8 @@
                   "    pm.response.to.have.status(200)",
                   "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
                   "",
-                  "    const bookUid = pm.collectionVariables.get(\"bookUid\")",
-                  "    const libraryUid = pm.collectionVariables.get(\"libraryUid\")",
+                  "    const bookUid = pm.environment.get(\"bookUid\")",
+                  "    const libraryUid = pm.environment.get(\"libraryUid\")",
                   "",
                   "    const response = pm.response.json();",
                   "    const request = JSON.parse(pm.request.body.raw)",
@@ -603,9 +603,9 @@
                   "    pm.response.to.have.status(200)",
                   "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
                   "",
-                  "    const bookUid = pm.collectionVariables.get(\"bookUid\")",
-                  "    const libraryUid = pm.collectionVariables.get(\"libraryUid\")",
-                  "    const reservationUid = pm.collectionVariables.get(\"reservationUid\")",
+                  "    const bookUid = pm.environment.get(\"bookUid\")",
+                  "    const libraryUid = pm.environment.get(\"libraryUid\")",
+                  "    const reservationUid = pm.environment.get(\"reservationUid\")",
                   "",
                   "    const response = pm.response.json();",
                   "    pm.expect(response).to.be.an(\"array\")",
@@ -782,11 +782,20 @@
                   "    pm.response.to.have.status(200)",
                   "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
                   "",
-                  "    const stars = Number(pm.collectionVariables.get(\"stars\"))",
+                  "    const stars = Number(pm.environment.get(\"stars\"))",
                   "",
                   "    const response = pm.response.json();",
                   "    pm.expect(response.stars).to.be.eq(stars + 1)",
                   "})"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "setTimeout(() => {}, 5000); "
                 ],
                 "type": "text/javascript"
               }

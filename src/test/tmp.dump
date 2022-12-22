@@ -1,0 +1,1 @@
+Insert into public.rating (id, username, stars) values (3, 'user1@ya.ru', 50)

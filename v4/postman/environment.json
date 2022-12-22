@@ -1,7 +1,7 @@
 {
   "_": {
     "postman_variable_scope": "environment",
-    "postman_exported_at": "2022-12-22T10:49:32.106Z",
+    "postman_exported_at": "2022-12-22T11:44:56.215Z",
     "postman_exported_using": "Newman/5.3.2"
   },
   "id": "acc90f86-88ad-444e-924e-6f48f6ee7711",
@@ -49,16 +49,21 @@
     },
     {
       "type": "any",
-      "value": "eyJraWQiOiJQRDF2LUwzam1PYTUtMVdsX0JIVzJWSGdwalFjTTRwR2tXWTdyNS1ZSnJJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlk4dmtxMGxZeHh4aW1hblR3dkl6WU9paWNRb0M0MXlJSDFIZmh1RFJuajgiLCJpc3MiOiJodHRwczovL2Rldi01MjYwMTc0NC5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NzE3MDYzOTAsImV4cCI6MTY3MTcwOTk5MCwiY2lkIjoiMG9hN3B4bWl0OGpvYXhOTUI1ZDciLCJ1aWQiOiIwMHU3cHg2N2tkN2NWSlVhWDVkNyIsInNjcCI6WyJvcGVuaWQiXSwiYXV0aF90aW1lIjoxNjcxNzA2MzkwLCJzdWIiOiJ1c2VyMUB5YS5ydSJ9.kWgjZ0c_AZm4dJhEr09vOuf2F8pEptrjUZ-N7imqXKH7PgMW_QvK11yCkIwRfw8iA61MpCgRtnBlk6zKSw0XcHNoZbzQs6csyWqtpVCy0KGw5udwNz4UxaogNZ5I0aonIgQNdNjYT3G4zreK2yDTN-N6--XrZsKOO1Z3wuUE4eivruExi5j2e65Ynf22CPBIEmxdczrCg9HAlfjCTT7ce6k4t8iQr659P6jDD7Vt7pHHXRwazA-TtLIIfDLk-XA28fC_ikBXOLdvirUfW4slhZbzOwXmdpVolUJAuiJxx4jgGVodqY08vBfugFjgAOU9gZJEXvXDrwZQ132w-WMWeA",
+      "value": "eyJraWQiOiJQRDF2LUwzam1PYTUtMVdsX0JIVzJWSGdwalFjTTRwR2tXWTdyNS1ZSnJJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULm1HY3hSZjRjeVBQbWJ3UFRaWnM0Z29TeGFST284SUxqRlp2UkNSWEs3TkEiLCJpc3MiOiJodHRwczovL2Rldi01MjYwMTc0NC5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NzE3MDk3MjIsImV4cCI6MTY3MTcxMzMyMiwiY2lkIjoiMG9hN3B4bWl0OGpvYXhOTUI1ZDciLCJ1aWQiOiIwMHU3cHg2N2tkN2NWSlVhWDVkNyIsInNjcCI6WyJvcGVuaWQiXSwiYXV0aF90aW1lIjoxNjcxNzA5NzIyLCJzdWIiOiJ1c2VyMUB5YS5ydSJ9.UxbK3tuN664pbZ0O-cKtp4V3ncWElhVgnN2hikq0nINsGUxydPzT_oo3-Wg8JsY3LngWGej23Y6DWuhD2HwSDfOQSQO0FOu9kiE90JKO6gGA2yBNAXIZfT1NLYSEOpzbrpSnTMBRM5LYvbR3CMKr56kIj8uLlj7krkoMHnngBAYRX8xHRs0o-voSxQBLwgaZDgARKH7-7oacJzY1UHMYNtwBIYxZwaQ86kQT7iT3IR3BNMgjffsyrOw-ROOl-0iwsWwVnu_y94KjgT1O_jsW-lx55QhDb3EnQ9B8yp6e-MLzSd2C8ZjhjSPuTyHBXuXPWpeKIuOnMXMWtaAPZvtHAw",
       "key": "authorizationToken"
     },
     {
       "type": "any",
-      "value": 52,
+      "value": 50,
       "key": "stars"
+    },
+    {
+      "type": "any",
+      "value": "b966b6ef-ea50-491b-9486-ed428a3a1f3f",
+      "key": "reservationUid"
     }
   ],
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2022-12-22T10:53:13.173Z",
+  "_postman_exported_at": "2022-12-22T11:48:54.431Z",
   "_postman_exported_using": "Newman/5.3.2"
 }

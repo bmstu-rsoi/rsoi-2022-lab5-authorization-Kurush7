@@ -16,10 +16,12 @@ from common.jwt_validator import with_jwt_token
 @circuitBreaker.circuit([Service.RESERVATION], MethodResult(ErrorDTO('Reservation Service unavailable'), 503))
 def get_user_reservations(ctx: QRContext):
     # full redirect
+    auth_headers = {'Authorization': ctx.headers.get('Authorization')}
+
     reservation_address = ctx.meta['services']['reservation']
 
     resp = send_request(reservation_address, f'api/v1/reservations',
-                        request=QRRequest(params={}, json_data=ctx.json_data, headers=ctx.headers))
+                        request=QRRequest(params={}, json_data=ctx.json_data, headers=auth_headers))
     if resp.status_code != 200:
         raise ServiceUnavailableException(Service.RESERVATION)
 
@@ -28,8 +30,8 @@ def get_user_reservations(ctx: QRContext):
     library_uids = list(set([x['libraryUid'] for x in data]))
 
     library_address = ctx.meta['services']['library']
-    books = {uid: get_book(library_address, uid) for uid in book_uids}
-    libraries = {uid: get_library(library_address, uid) for uid in library_uids}
+    books = {uid: get_book(library_address, uid, auth_headers) for uid in book_uids}
+    libraries = {uid: get_library(library_address, uid, auth_headers) for uid in library_uids}
     full = True
 
     if None in list(books.values()) + list(libraries.values()):
@@ -55,6 +57,7 @@ def get_user_reservations(ctx: QRContext):
 def rent_book(ctx: QRContext, username):
     # get method params
     params = {}
+    auth_headers = {'Authorization':ctx.headers.get('Authorization')}
 
     data = ctx.json_data
     book_uid, library_uid, till_date = [data.get(x) for x in ['bookUid', 'libraryUid', 'tillDate']]
@@ -74,14 +77,14 @@ def rent_book(ctx: QRContext, username):
 
     # get reservations
     resp = send_request_supress(reservation_address, f'api/v1/reservations',
-                        request=QRRequest(params=params, json_data=ctx.json_data, headers=ctx.headers))
+                        request=QRRequest(params=params, json_data=ctx.json_data, headers=auth_headers))
     if resp.status_code != 200:
         return MethodResult(ErrorDTO('reservations not found'), 503)
     reservations = resp.get_json()
 
     # get user rating
     resp = send_request_supress(rating_address, f'api/v1/rating',
-                        request=QRRequest(params=params, json_data=ctx.json_data, headers=ctx.headers))
+                        request=QRRequest(params=params, json_data=ctx.json_data, headers=auth_headers))
     if resp.status_code != 200:
         return MethodResult(ErrorDTO('Bonus Service unavailable'), 503)
     rating = resp.get_json()
@@ -92,18 +95,19 @@ def rent_book(ctx: QRContext, username):
     # create reservation
     resp = send_request_supress(reservation_address, f'api/v1/reservations', method='POST',
                         request=QRRequest(json_data={'username': username, 'library_uid': library_uid,
-                                                     'book_uid': book_uid, 'till_date': till_date}))
+                                                     'book_uid': book_uid, 'till_date': till_date,},
+                                          headers=auth_headers))
     if resp.status_code != 200:
         return MethodResult('can\'t create reservation', 400)
     reservation = resp.get_json()
-    _expand_reservation(reservation, library_address)
+    _expand_reservation(reservation, library_address, auth_headers)
 
     # decrease library
     resp = send_request_supress(library_address, f'api/v1/libraries/{library_uid}/books/{book_uid}/rent', method='POST',
-                        request=QRRequest())
+                        request=QRRequest(headers=auth_headers))
     if resp.status_code != 200:
         # undo reservation
-        res_uid = reservation['reservation_uid']
+        res_uid = reservation['reservationUid']
         def undo_reserve():
             resp = send_request(reservation_address, f'api/v1/reservations/{res_uid}', method='DELETE')
             if resp.status_code != 200:
@@ -125,6 +129,7 @@ def rent_book(ctx: QRContext, username):
 def return_book(ctx: QRContext, reservation_uid: str, username: str):
     # get method params
     params = {}
+    auth_headers = {'Authorization': ctx.headers.get('Authorization')}
 
     data = ctx.json_data
     condition, date = [data.get(x) for x in ['condition', 'date']]
@@ -139,7 +144,7 @@ def return_book(ctx: QRContext, reservation_uid: str, username: str):
     rating_address = ctx.meta['services']['rating']
 
     # get reservation
-    resp = send_request_supress(reservation_address, f'api/v1/reservations/{reservation_uid}', request=QRRequest())
+    resp = send_request_supress(reservation_address, f'api/v1/reservations/{reservation_uid}', request=QRRequest(headers=auth_headers))
     if resp.status_code != 200:
         return MethodResult('reservation not found', 400)
     reservation = resp.get_json()
@@ -150,7 +155,7 @@ def return_book(ctx: QRContext, reservation_uid: str, username: str):
     library_uid, book_uid, till_date = reservation['libraryUid'], reservation['bookUid'], reservation['tillDate']
 
     # get book condition
-    resp = send_request_supress(library_address, f'api/v1/books/{book_uid}', request=QRRequest())
+    resp = send_request_supress(library_address, f'api/v1/books/{book_uid}', request=QRRequest(headers=auth_headers))
     if resp.status_code != 200:
         return MethodResult('book not found', 400)
     book = resp.get_json()
@@ -159,7 +164,7 @@ def return_book(ctx: QRContext, reservation_uid: str, username: str):
     # update reservation status
     res_status = 'EXPIRED' if (date > till_date) else 'RETURNED'
     resp = send_request_supress(reservation_address, f'api/v1/reservations/{reservation_uid}', method='POST',
-                        request=QRRequest(params={'status': res_status}))
+                        request=QRRequest(params={'status': res_status}, headers=auth_headers))
     if resp.status_code != 200:
         return MethodResult('reservation status not updated', 400)
 
@@ -167,7 +172,7 @@ def return_book(ctx: QRContext, reservation_uid: str, username: str):
     def return_book():
         # note: what if condition has worsened?
         resp = send_request(library_address, f'api/v1/libraries/{library_uid}/books/{book_uid}/return', method='POST',
-                            request=QRRequest())
+                            request=QRRequest(headers=auth_headers))
         if resp.status_code != 200:
             raise Exception('failed to return book')
 
@@ -176,7 +181,7 @@ def return_book(ctx: QRContext, reservation_uid: str, username: str):
         # get user rating
         def get_rating():
             resp = send_request_supress(rating_address, f'api/v1/rating',
-                                        request=QRRequest(params=params, json_data=ctx.json_data, headers=ctx.headers))
+                                        request=QRRequest(params=params, json_data=ctx.json_data, headers=auth_headers))
             if resp.status_code != 200:
                 raise Exception('failed to get rating')
             rating = resp.get_json()
@@ -199,7 +204,7 @@ def return_book(ctx: QRContext, reservation_uid: str, username: str):
             params['stars'] = new_stars
             def send_update_rating():
                 resp = send_request(rating_address, f'api/v1/rating',
-                                    request=QRRequest(params=params), method='PUT')
+                                    request=QRRequest(params=params, headers=auth_headers), method='PUT')
                 if resp.status_code != 200:
                     raise Exception('failed to update rating book')
 
@@ -225,12 +230,12 @@ def return_book(ctx: QRContext, reservation_uid: str, username: str):
     return MethodResult(status_code=204)
 
 
-def _expand_reservation(res, library_address):
+def _expand_reservation(res, library_address, auth_headers):
     book_uid = res['bookUid']
     library_uid = res['libraryUid']
 
-    book = get_book(library_address, book_uid)
-    library = get_library(library_address, library_uid)
+    book = get_book(library_address, book_uid, auth_headers)
+    library = get_library(library_address, library_uid, auth_headers)
 
     res['book'] = book
     res['library'] = library

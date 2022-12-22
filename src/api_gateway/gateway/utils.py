@@ -9,15 +9,15 @@ class Service(Enum):
     RESERVATION = 3
 
 
-def get_book(address: QRAddress, uid: str):
-    resp = send_request_supress(address, f'api/v1/books/{uid}')
+def get_book(address: QRAddress, uid: str, auth_headers: dict):
+    resp = send_request_supress(address, f'api/v1/books/{uid}', request=QRRequest(headers=auth_headers))
     if resp.status_code != 200:
         return None
     return resp.get_json()
 
 
-def get_library(address: QRAddress, uid: str):
-    resp = send_request_supress(address, f'api/v1/libraries/{uid}')
+def get_library(address: QRAddress, uid: str, auth_headers):
+    resp = send_request_supress(address, f'api/v1/libraries/{uid}', request=QRRequest(headers=auth_headers))
     if resp.status_code != 200:
         return None
     return resp.get_json()
