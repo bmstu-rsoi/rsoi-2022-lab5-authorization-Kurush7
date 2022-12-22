@@ -3,7 +3,7 @@ rating:
     port: 8050
     image:
       name: kurushpondoxocrow/rsoi-rating
-      version: "1.0"
+      version: "1.1"
     database:
       name: ratings
       username: program
@@ -14,7 +14,7 @@ library:
     port: 8060
     image:
       name: kurushpondoxocrow/rsoi-library
-      version: "1.0"
+      version: "1.1"
     database: 
       name: libraries
       username: program
@@ -25,7 +25,7 @@ reservation:
     port: 8070
     image:
       name: kurushpondoxocrow/rsoi-reservation
-      version: "1.0"
+      version: "1.1"
     database: 
       name: reservations
       username: program
@@ -36,5 +36,5 @@ api:
     port: 8080
     image:
       name: kurushpondoxocrow/rsoi-api
-      version: "1.0"
+      version: "1.1"
     isGateway: true
