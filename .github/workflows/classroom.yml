@@ -24,25 +24,25 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and publish images
-        timeout-minutes: 15
-        run: |
-          cd src
-          chmod +x build_docker.sh
-          ./build_docker.sh
-
-      - name: Deploy
-        run: |
-          set -x
-          kubectl config set-cluster rsoi --server="$KUBER_HOST" --insecure-skip-tls-verify=true
-          kubectl config set-credentials cloud_okteto_com-user --token="$KUBER_TOKEN"
-          kubectl config set-context default --cluster=rsoi --user=cloud_okteto_com-user --namespace="kurush7"
-          kubectl config use-context default
-
-          kubectl get pods
-          cd k8s
-          helm upgrade services ./services-chart
-          sleep 45
+#      - name: Build and publish images
+#        timeout-minutes: 15
+#        run: |
+#          cd src
+#          chmod +x build_docker.sh
+#          ./build_docker.sh
+#
+#      - name: Deploy
+#        run: |
+#          set -x
+#          kubectl config set-cluster rsoi --server="$KUBER_HOST" --insecure-skip-tls-verify=true
+#          kubectl config set-credentials cloud_okteto_com-user --token="$KUBER_TOKEN"
+#          kubectl config set-context default --cluster=rsoi --user=cloud_okteto_com-user --namespace="kurush7"
+#          kubectl config use-context default
+#
+#          kubectl get pods
+#          cd k8s
+#          helm upgrade services ./services-chart
+#          sleep 45
 
       - name: Run API Tests
         uses: matt-ball/newman-action@master

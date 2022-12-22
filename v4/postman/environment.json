@@ -1,39 +1,64 @@
 {
+  "_": {
+    "postman_variable_scope": "environment",
+    "postman_exported_at": "2022-12-22T10:49:32.106Z",
+    "postman_exported_using": "Newman/5.3.2"
+  },
   "id": "acc90f86-88ad-444e-924e-6f48f6ee7711",
   "name": "[rsoi][lab5] Library System",
   "values": [
     {
-      "key": "serviceUrl",
+      "type": "any",
       "value": "http://load-blancer-kurush7.cloud.okteto.net",
-      "enabled": true
+      "key": "serviceUrl"
     },
     {
-      "key": "identityProviderUrl",
+      "type": "any",
       "value": "https://dev-52601744.okta.com",
-      "enabled": true
+      "key": "identityProviderUrl"
     },
     {
-      "key": "username",
+      "type": "any",
       "value": "user1@ya.ru",
-      "enabled": true
+      "key": "username"
     },
     {
-      "key": "password",
+      "type": "any",
       "value": "shizik34",
-      "enabled": true
+      "key": "password"
     },
     {
-      "key": "clientId",
+      "type": "any",
       "value": "0oa7pxmit8joaxNMB5d7",
-      "enabled": true
+      "key": "clientId"
     },
     {
-      "key": "clientSecret",
+      "type": "any",
       "value": "akfq9Pds22XWUJESJ6196HIAe0gd5QhvjvJE3GoA",
-      "enabled": true
+      "key": "clientSecret"
+    },
+    {
+      "type": "any",
+      "value": "83575e12-7ce0-48ee-9931-51919ff3c9ee",
+      "key": "libraryUid"
+    },
+    {
+      "type": "any",
+      "value": "f7cdc58f-2caf-4b15-9727-f89dcc629b27",
+      "key": "bookUid"
+    },
+    {
+      "type": "any",
+      "value": "eyJraWQiOiJQRDF2LUwzam1PYTUtMVdsX0JIVzJWSGdwalFjTTRwR2tXWTdyNS1ZSnJJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlk4dmtxMGxZeHh4aW1hblR3dkl6WU9paWNRb0M0MXlJSDFIZmh1RFJuajgiLCJpc3MiOiJodHRwczovL2Rldi01MjYwMTc0NC5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NzE3MDYzOTAsImV4cCI6MTY3MTcwOTk5MCwiY2lkIjoiMG9hN3B4bWl0OGpvYXhOTUI1ZDciLCJ1aWQiOiIwMHU3cHg2N2tkN2NWSlVhWDVkNyIsInNjcCI6WyJvcGVuaWQiXSwiYXV0aF90aW1lIjoxNjcxNzA2MzkwLCJzdWIiOiJ1c2VyMUB5YS5ydSJ9.kWgjZ0c_AZm4dJhEr09vOuf2F8pEptrjUZ-N7imqXKH7PgMW_QvK11yCkIwRfw8iA61MpCgRtnBlk6zKSw0XcHNoZbzQs6csyWqtpVCy0KGw5udwNz4UxaogNZ5I0aonIgQNdNjYT3G4zreK2yDTN-N6--XrZsKOO1Z3wuUE4eivruExi5j2e65Ynf22CPBIEmxdczrCg9HAlfjCTT7ce6k4t8iQr659P6jDD7Vt7pHHXRwazA-TtLIIfDLk-XA28fC_ikBXOLdvirUfW4slhZbzOwXmdpVolUJAuiJxx4jgGVodqY08vBfugFjgAOU9gZJEXvXDrwZQ132w-WMWeA",
+      "key": "authorizationToken"
+    },
+    {
+      "type": "any",
+      "value": 52,
+      "key": "stars"
     }
   ],
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2021-10-15T18:17:23.977Z",
-  "_postman_exported_using": "Postman/9.0.5"
+  "_postman_exported_at": "2022-12-22T10:53:13.173Z",
+  "_postman_exported_using": "Newman/5.3.2"
 }
