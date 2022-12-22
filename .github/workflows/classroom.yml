@@ -41,7 +41,7 @@ jobs:
 
           kubectl get pods
           cd k8s
-          helm upgrade services ./services-chart
+          helm delete services && helm install services ./services-chart
           sleep 45
 
       - name: Run API Tests
