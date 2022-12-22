@@ -1,4 +1,4 @@
-version=1.0
+version=1.1
 
 docker buildx build --push -t kurushpondoxocrow/rsoi-library:$version -f LibraryDockerfile .
 docker buildx build --push -t kurushpondoxocrow/rsoi-rating:$version -f RatingDockerfile .

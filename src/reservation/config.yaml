@@ -10,6 +10,11 @@ app:
     file: reservation_service.log
     file_level: info
 
+tokens:
+  jwks_uri: http://dev-52601744.okta.com/oauth2/default/v1/keys
+  issuer: https://dev-52601744.okta.com/oauth2/default
+  audience: api://default
+
 database:
   connector: postgres
   dbname: reservations

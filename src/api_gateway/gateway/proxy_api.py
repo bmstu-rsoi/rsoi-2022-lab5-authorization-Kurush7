@@ -4,8 +4,11 @@ from .dtos import *
 from .utils import *
 from .circuit_breaker import circuitBreaker, Service, ServiceUnavailableException
 
+from common.jwt_validator import with_jwt_token
+
 
 # /api/v1/libraries
+@with_jwt_token(extract_username=False)
 @circuitBreaker.circuit([Service.LIBRARY], MethodResult('libraries not found', 503))
 def list_libraries_in_city(ctx: QRContext):
     # full redirect
@@ -20,6 +23,7 @@ def list_libraries_in_city(ctx: QRContext):
 
 
 # /api/v1/libraries/<library_uid>/books
+@with_jwt_token(extract_username=False)
 @circuitBreaker.circuit([Service.LIBRARY], MethodResult('books not found', 503))
 def list_books_in_library(ctx: QRContext, library_uid: int):
     # full redirect
@@ -33,13 +37,12 @@ def list_books_in_library(ctx: QRContext, library_uid: int):
 
 
 # /api/v1/rating
+@with_jwt_token(extract_username=False)
 @circuitBreaker.circuit([Service.RATING], MethodResult(ErrorDTO('Bonus Service unavailable'), 503))
 def get_user_rating(ctx: QRContext):
     # full redirect
     address = ctx.meta['services']['rating']
-    username = ctx.headers.environ['HTTP_X_USER_NAME']
-    params = {'X-User-Name': username}
-    resp = send_request_supress(address, f'api/v1/rating', request=QRRequest(params=params, json_data=ctx.json_data, headers=ctx.headers))
+    resp = send_request_supress(address, f'api/v1/rating', request=QRRequest(params={}, json_data=ctx.json_data, headers=ctx.headers))
     if resp.status_code != 200:
         raise ServiceUnavailableException(Service.RATING)
 

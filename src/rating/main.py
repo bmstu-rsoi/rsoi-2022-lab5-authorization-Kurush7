@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("..")
 sys.path.append("../common")
 
@@ -9,19 +10,19 @@ from qr_server.FlaskServer import FlaskServer
 from rating.repository import RatingRepository
 from rating.dtos import *
 from common.common_api import health
+from common.jwt_validator import with_jwt_token, JWTTokenValidator
 
 
-def get_user_rating(ctx: QRContext):
-    username = ctx.params.get('X-User-Name')
-
+@with_jwt_token(extract_username=True)
+def get_user_rating(ctx: QRContext, username):
     rating = ctx.repository.get_rating(username)
     if rating is None:
         return MethodResult('user not found', 400)
     return MethodResult(RatingDTO(**rating))
 
 
-def set_user_rating(ctx: QRContext):
-    username = ctx.params.get('X-User-Name')
+@with_jwt_token(extract_username=True)
+def set_user_rating(ctx: QRContext, username):
     stars = ctx.params.get('stars')
 
     if None in [stars, username]:
@@ -48,6 +49,10 @@ if __name__ == "__main__":
     server = RatingServer()
     server.init_server(config['app'])
     server.connect_repository(config['database'])
+
+    jwt_validator = JWTTokenValidator(config['tokens']['jwks_uri'], config['tokens']['issuer'],
+                                      config['tokens']['audience'])
+    server.register_manager(jwt_validator)
 
     if config['app']['logging']:
         server.configure_logger(config['app']['logging'])

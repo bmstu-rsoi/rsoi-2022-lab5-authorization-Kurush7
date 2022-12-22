@@ -21,4 +21,5 @@ class InvalidClaimsError(InvalidTokenError):
 class TokenExpiredError(AuthError):
     pass
 
-JWT_ERRORS = [AuthError, KeyIDNotFoundError, InvalidTokenError, InvalidHeaderError, InvalidClaimsError, TokenExpiredError]
+# note: important to be tuple, not list! (if using as "except JWT_ERRORS as e: ...)
+JWT_ERRORS = (AuthError, KeyIDNotFoundError, InvalidTokenError, InvalidHeaderError, InvalidClaimsError, TokenExpiredError)

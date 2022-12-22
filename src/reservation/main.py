@@ -12,17 +12,18 @@ from qr_server.FlaskServer import FlaskServer
 from reservation.repository import ReservationRepository
 from reservation.dtos import *
 from common.common_api import health
+from common.jwt_validator import with_jwt_token, JWTTokenValidator
 
 
-def get_user_reservations(ctx: QRContext):
-    username = ctx.params.get('X-User-Name')
-
+@with_jwt_token(extract_username=True)
+def get_user_reservations(ctx: QRContext, username):
     reservations = ctx.repository.get_reservations(username)
     if reservations is None:
         return MethodResult('user not found', 400)
     return MethodResult(ListReservationDTO(reservations))
 
 
+@with_jwt_token(extract_username=False)
 def create_reservation(ctx: QRContext):
     data = ctx.json_data
     username, book_uid, library_uid, till_date = [data.get(x) for x in ['username', 'book_uid', 'library_uid', 'till_date']]
@@ -40,6 +41,7 @@ def create_reservation(ctx: QRContext):
     return MethodResult(ReservationDTO(**reservation))
 
 
+@with_jwt_token(extract_username=False)
 def delete_reservation(ctx: QRContext, reservation_uid):
     reservation = ctx.repository.delete_reservation(reservation_uid)
     if reservation is None:
@@ -47,12 +49,15 @@ def delete_reservation(ctx: QRContext, reservation_uid):
     return MethodResult()
 
 
+@with_jwt_token(extract_username=False)
 def get_reservation(ctx: QRContext, reservation_uid):
     reservation = ctx.repository.get_reservation(reservation_uid)
     if reservation is None:
         return MethodResult('reservation not found', 400)
     return MethodResult(ReservationDTO(**reservation))
 
+
+@with_jwt_token(extract_username=False)
 def set_reservation_status(ctx: QRContext, reservation_uid):
     status = ctx.params.get('status')
     ok = ctx.repository.set_reservation_status(reservation_uid, status)
@@ -76,6 +81,10 @@ if __name__ == "__main__":
     server = ReservationServer()
     server.init_server(config['app'])
     server.connect_repository(config['database'])
+
+    jwt_validator = JWTTokenValidator(config['tokens']['jwks_uri'], config['tokens']['issuer'],
+                                      config['tokens']['audience'])
+    server.register_manager(jwt_validator)
 
     if config['app']['logging']:
         server.configure_logger(config['app']['logging'])

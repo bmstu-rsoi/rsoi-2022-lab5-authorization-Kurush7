@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("..")
 sys.path.append("../common")
 
@@ -9,8 +10,10 @@ from qr_server.FlaskServer import FlaskServer
 from library.repository import LibraryRepository
 from library.dtos import *
 from common.common_api import health
+from common.jwt_validator import with_jwt_token, JWTTokenValidator
 
 
+@with_jwt_token(extract_username=False)
 def list_libraries_in_city(ctx: QRContext):
     city = ctx.params.get('city')
     page = int(ctx.params.get('page'))
@@ -24,6 +27,7 @@ def list_libraries_in_city(ctx: QRContext):
     return MethodResult(PagingListLibraryDTO(page, size, len(libraries), libraries))
 
 
+@with_jwt_token(extract_username=False)
 def list_books_in_library(ctx: QRContext, library_uid: str):
     show_all = ctx.params.get('showAll')
     page = int(ctx.params.get('page'))
@@ -42,6 +46,7 @@ def list_books_in_library(ctx: QRContext, library_uid: str):
     return MethodResult(PagingListBookDTO(page, size, len(books), books))
 
 
+@with_jwt_token(extract_username=False)
 def get_book(ctx: QRContext, book_uid: str):
     book = ctx.repository.get_book(book_uid)
     if book is None:
@@ -49,6 +54,7 @@ def get_book(ctx: QRContext, book_uid: str):
     return MethodResult(UncountedBookDTO(**book))
 
 
+@with_jwt_token(extract_username=False)
 def get_library(ctx: QRContext, library_uid: str):
     library = ctx.repository.get_library(library_uid)
     if library is None:
@@ -56,6 +62,7 @@ def get_library(ctx: QRContext, library_uid: str):
     return MethodResult(LibraryDTO(**library))
 
 
+@with_jwt_token(extract_username=False)
 def rent_book(ctx: QRContext, library_uid: str, book_uid: str):
     ok = ctx.repository.rent_book(library_uid, book_uid)
     if not ok:
@@ -63,13 +70,12 @@ def rent_book(ctx: QRContext, library_uid: str, book_uid: str):
     return MethodResult('ok')
 
 
+@with_jwt_token(extract_username=False)
 def return_book(ctx: QRContext, library_uid: str, book_uid: str):
     ok = ctx.repository.return_book(library_uid, book_uid)
     if not ok:
         return MethodResult('error', 400)
     return MethodResult('ok')
-
-
 
 
 class LibraryServer(FlaskServer, LibraryRepository):
@@ -87,6 +93,9 @@ if __name__ == "__main__":
     server = LibraryServer()
     server.init_server(config['app'])
     server.connect_repository(config['database'])
+
+    jwt_validator = JWTTokenValidator(config['tokens']['jwks_uri'], config['tokens']['issuer'], config['tokens']['audience'])
+    server.register_manager(jwt_validator)
 
     if config['app']['logging']:
         server.configure_logger(config['app']['logging'])

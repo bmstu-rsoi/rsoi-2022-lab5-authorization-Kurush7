@@ -159,7 +159,7 @@ def with_jwt_token(extract_username=True):
                 username = payload['sub']   # todo check
                 if extract_username:
                     kwargs['username'] = username
-                return f(ctx, *args, **kwargs, user_id=payload['user_id'])
+                return f(ctx, *args, **kwargs)
             except JWT_ERRORS as e:
                 return MethodResult(f'invalid token: {e}', 401)
             except Exception as e:
@@ -167,13 +167,3 @@ def with_jwt_token(extract_username=True):
         decorator.__name__ = f.__name__
         return decorator
     return wrapper
-
-
-
-if __name__ == '__main__':
-    val = JWTTokenValidator('http://dev-52601744.okta.com/oauth2/default/v1/keys', 'https://dev-52601744.okta.com/oauth2/default',
-                            audience='api://default')
-    val.refresh_keys()
-    token = 'eyJraWQiOiJQRDF2LUwzam1PYTUtMVdsX0JIVzJWSGdwalFjTTRwR2tXWTdyNS1ZSnJJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlpETzJSSEhCWDRFNHVkSnN3VENxazVyRTRTSGE3dFNkcmsyQ1JHeG5KRGsiLCJpc3MiOiJodHRwczovL2Rldi01MjYwMTc0NC5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NzE2OTg3NjQsImV4cCI6MTY3MTcwMjM2NCwiY2lkIjoiMG9hN3B4bWl0OGpvYXhOTUI1ZDciLCJ1aWQiOiIwMHU3cHg2N2tkN2NWSlVhWDVkNyIsInNjcCI6WyJvcGVuaWQiLCJlbWFpbCIsInByb2ZpbGUiXSwiYXV0aF90aW1lIjoxNjcxNjk4NzY0LCJzdWIiOiJ1c2VyMUB5YS5ydSJ9.WqVjH_WAttvmnZwMt6AlYANW7_cZgLMjroLbXTu-7MiiK7OswpY9R4j3mIaYTLpUIhVwN5gbmVETftb7voADD_SHFp4_p1bZWwWjnoF4mwimHqASHDYkB47VMvdjom0U-7I8Fi_R-e5U2hn7f9Qe_HF0iZC6AwB2QWBGaSyL-xSfqbTJWquHCyVeQ5gjMOuQsYIHz4rjOXD7-KWKMYRvxuR6c9rx7WY2WLQgoCme3Ujwmu_hFDjt8AGKwiAG_qDSkxIIpfEepzsNm6-R3slot7G9o7xeZCk7EungUccdv7bjkkra_sCadsfbvzPUuuSJWfxAfO5Qzr1Q3Tss80IU0Q'
-    res = val.validate_token(token)
-    print(res)
