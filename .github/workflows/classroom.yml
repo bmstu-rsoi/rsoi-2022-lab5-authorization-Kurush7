@@ -2,6 +2,11 @@ name: GitHub Classroom Workflow
 on:
   push:
     branches: [ master ]
+
+env:
+  KUBER_HOST: ${{ secrets.KUBER_HOST }}
+  KUBER_TOKEN: ${{ secrets.KUBER_TOKEN }}
+
 jobs:
   build:
     name: Autograding
