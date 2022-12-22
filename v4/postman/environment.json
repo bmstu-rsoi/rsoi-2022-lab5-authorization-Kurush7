@@ -1,35 +1,35 @@
 {
   "id": "acc90f86-88ad-444e-924e-6f48f6ee7711",
-  "name": "[rsoi][lab5] Flight Service",
+  "name": "[rsoi][lab5] Library System",
   "values": [
     {
       "key": "serviceUrl",
-      "value": "",
+      "value": "http://load-blancer-kurush7.cloud.okteto.net",
       "enabled": true
     },
     {
       "key": "identityProviderUrl",
-      "value": "",
+      "value": "http://dev-52601744.okta.com",
       "enabled": true
     },
     {
       "key": "username",
-      "value": "",
+      "value": "user1@ya.ru",
       "enabled": true
     },
     {
       "key": "password",
-      "value": "",
+      "value": "shizik34",
       "enabled": true
     },
     {
       "key": "clientId",
-      "value": "",
+      "value": "0oa7pxmit8joaxNMB5d7",
       "enabled": true
     },
     {
       "key": "clientSecret",
-      "value": "",
+      "value": "akfq9Pds22XWUJESJ6196HIAe0gd5QhvjvJE3GoA",
       "enabled": true
     }
   ],

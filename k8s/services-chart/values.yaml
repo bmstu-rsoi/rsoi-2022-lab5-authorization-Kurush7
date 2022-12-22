@@ -1,0 +1,40 @@
+rating:
+  service:
+    port: 8050
+    image:
+      name: kurushpondoxocrow/rsoi-rating
+      version: "1.0"
+    database:
+      name: ratings
+      username: program
+      password: test
+
+library:
+  service:
+    port: 8060
+    image:
+      name: kurushpondoxocrow/rsoi-library
+      version: "1.0"
+    database: 
+      name: libraries
+      username: program
+      password: test
+
+reservation:
+  service:
+    port: 8070
+    image:
+      name: kurushpondoxocrow/rsoi-reservation
+      version: "1.0"
+    database: 
+      name: reservations
+      username: program
+      password: test
+
+api:
+  service:
+    port: 8080
+    image:
+      name: kurushpondoxocrow/rsoi-api
+      version: "1.0"
+    isGateway: true

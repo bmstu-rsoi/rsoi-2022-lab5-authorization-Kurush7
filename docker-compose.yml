@@ -1,0 +1,46 @@
+version: "3"
+services:
+  postgres:
+    image: library/postgres:13
+    container_name: postgres
+    restart: on-failure
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./postgres/:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+
+  library:
+    image: kurushpondoxocrow/rsoi-library:1.0
+    container_name: library
+    restart: on-failure
+    ports:
+      - "8060:8060"
+
+  rating:
+    image: kurushpondoxocrow/rsoi-rating:1.0
+    container_name: rating
+    restart: on-failure
+    ports:
+      - "8050:8050"
+
+  reservation:
+    image: kurushpondoxocrow/rsoi-reservation:1.0
+    container_name: reservation
+    restart: on-failure
+    ports:
+      - "8070:8070"
+
+  api:
+    image: kurushpondoxocrow/rsoi-api:1.0
+    container_name: api
+    restart: on-failure
+    ports:
+      - "8080:8080"
+
+volumes:
+  db-data:
